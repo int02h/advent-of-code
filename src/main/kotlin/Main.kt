@@ -27,6 +27,8 @@ fun main() {
 //    aoc2022.Day13.part2(Input(2022, 13))
 //    aoc2022.Day14.part1(Input(2022, 14))
 //    aoc2022.Day14.part2(Input(2022, 14))
-    aoc2022.Day15.part1(Input(2022, 15))
-    aoc2022.Day15.part2(Input(2022, 15))
+//    aoc2022.Day15.part1(Input(2022, 15))
+//    aoc2022.Day15.part2(Input(2022, 15))
+    aoc2022.Day16.part1(Input(2022, 16))
+    aoc2022.Day16.part2(Input(2022, 16))
 }
