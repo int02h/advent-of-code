@@ -33,6 +33,8 @@ fun main() {
 //    aoc2022.Day16.part2(Input(2022, 16))
 //    aoc2022.Day17.part1(Input(2022, 17))
 //    aoc2022.Day17.part2(Input(2022, 17))
-    aoc2022.Day18.part1(Input(2022, 18))
-    aoc2022.Day18.part2(Input(2022, 18))
+//    aoc2022.Day18.part1(Input(2022, 18))
+//    aoc2022.Day18.part2(Input(2022, 18))
+    aoc2022.Day19.part1(Input(2022, 19))
+    aoc2022.Day19.part2(Input(2022, 19))
 }
