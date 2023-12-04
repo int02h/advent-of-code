@@ -1,7 +1,7 @@
 import org.reflections.Reflections
 
 fun main() {
-    val year = 2015
+    val year = 2023
     val reflections = Reflections("aoc${year}")
     val instance = reflections.getSubTypesOf(AocDay::class.java)
         .mapNotNull { it.kotlin.objectInstance }
