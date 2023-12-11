@@ -5,8 +5,7 @@ fun main() {
     val reflections = Reflections("aoc${year}")
     val instance = reflections.getSubTypesOf(AocDay::class.java)
         .mapNotNull { it.kotlin.objectInstance }
-        .sortedBy { it::class.simpleName }
-        .last()
+        .maxBy { it::class.simpleName!!.dropWhile { ch -> !ch.isDigit() }.toInt() }
     instance.part1(Input(year, getDayIndex(instance)))
     instance.part2(Input(year, getDayIndex(instance)))
 }
