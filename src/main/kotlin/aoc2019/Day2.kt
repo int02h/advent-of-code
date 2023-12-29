@@ -10,6 +10,7 @@ object Day2 : AocDay {
         program[1] = 12
         program[2] = 2
         IntCodeComputer(program).runAll()
+        assert(program[0] == 5290681)
         println(program[0])
     }
 
@@ -22,7 +23,9 @@ object Day2 : AocDay {
                 copy[2] = verb
                 IntCodeComputer(copy).runAll()
                 if (copy[0] == 19690720) {
-                    print(100 * noun + verb)
+                    val result = 100 * noun + verb
+                    assert(result == 5741)
+                    println(result)
                     return
                 }
             }
@@ -31,40 +34,5 @@ object Day2 : AocDay {
 
     private fun readProgram(input: Input): IntArray =
         input.asText().trim().split(",").map { it.trim().toInt() }.toIntArray()
-
-    class IntCodeComputer(private val program: IntArray) {
-        var position = 0
-
-        fun runAll() {
-            while (position != -1) {
-                executeNext()
-            }
-        }
-
-        private fun executeNext() {
-            when (val opcode = program[position]) {
-                1 -> {
-                    val res = getIndirectValue(1) + getIndirectValue(2)
-                    setIndirectValue(3, res)
-                    position += 4
-                }
-                2 -> {
-                    val res = getIndirectValue(1) * getIndirectValue(2)
-                    setIndirectValue(3, res)
-                    position += 4
-                }
-                99 -> position = -1
-                else -> error("Unknown opcode: $opcode")
-            }
-        }
-
-        private fun getIndirectValue(offset: Int): Int {
-            return program[program[position + offset]]
-        }
-
-        private fun setIndirectValue(offset: Int, value: Int) {
-            program[program[position + offset]] = value
-        }
-    }
 
 }
