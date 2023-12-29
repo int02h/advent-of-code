@@ -5,11 +5,18 @@ class IntCodeComputer(
     private val input: MutableList<Int> = mutableListOf(),
     private val output: MutableList<Int> = mutableListOf()
 ) {
-    private var position = 0
+    var position = 0
     private val parameterModes = Array(3) { ParameterMode.PositionMode }
 
     fun runAll() {
         while (position != -1) {
+            executeNext()
+        }
+    }
+
+    fun runUntilOutput() {
+        val outputTargetSize = output.size + 1
+        while (position != -1 && output.size != outputTargetSize) {
             executeNext()
         }
     }
