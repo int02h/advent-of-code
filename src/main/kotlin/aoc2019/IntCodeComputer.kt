@@ -1,12 +1,19 @@
 package aoc2019
 
 class IntCodeComputer(
-    private val program: IntArray,
-    private val input: MutableList<Int> = mutableListOf(),
-    private val output: MutableList<Int> = mutableListOf()
+    program: LongArray,
+    private val input: MutableList<Long> = mutableListOf(),
+    private val output: MutableList<Long> = mutableListOf()
 ) {
     var position = 0
+    private var relativeBase = 0
     private val parameterModes = Array(3) { ParameterMode.PositionMode }
+
+    val memory = mutableMapOf<Int, Long>()
+
+    init {
+        program.forEachIndexed { index, value -> memory[index] = value }
+    }
 
     fun runAll() {
         while (position != -1) {
@@ -22,7 +29,7 @@ class IntCodeComputer(
     }
 
     private fun executeNext() {
-        val opcode = program[position]
+        val opcode = getMem(position).toInt()
         getParameterModes(opcode)
         when (opcode % 100) {
             1 -> {
@@ -44,15 +51,15 @@ class IntCodeComputer(
                 position += 2
             }
             5 -> {
-                if (getValue(1) != 0) {
-                    position = getValue(2)
+                if (getValue(1) != 0L) {
+                    position = getValue(2).toInt()
                 } else {
                     position += 3
                 }
             }
             6 -> {
-                if (getValue(1) == 0) {
-                    position = getValue(2)
+                if (getValue(1) == 0L) {
+                    position = getValue(2).toInt()
                 } else {
                     position += 3
                 }
@@ -67,6 +74,10 @@ class IntCodeComputer(
                 setValue(3, if (res) 1 else 0)
                 position += 4
             }
+            9 -> {
+                relativeBase += getValue(1).toInt()
+                position += 2
+            }
             99 -> position = -1
             else -> error("Unknown opcode: $opcode")
         }
@@ -80,21 +91,26 @@ class IntCodeComputer(
         }
     }
 
-    private fun getValue(index: Int): Int =
+    private fun getValue(index: Int): Long =
         when (parameterModes[index - 1]) {
-            ParameterMode.PositionMode -> program[program[position + index]]
-            ParameterMode.ImmediateMode -> program[position + index]
+            ParameterMode.PositionMode -> getMem(getMem(position + index).toInt())
+            ParameterMode.ImmediateMode -> getMem(position + index)
+            ParameterMode.RelativeMode -> getMem(relativeBase + getMem(position + index).toInt())
         }
 
-    private fun setValue(index: Int, value: Int) {
+    private fun setValue(index: Int, value: Long) {
         when (parameterModes[index - 1]) {
-            ParameterMode.PositionMode -> program[program[position + index]] = value
+            ParameterMode.PositionMode -> memory[getMem(position + index).toInt()] = value
             ParameterMode.ImmediateMode -> error("Invalid immediate write")
+            ParameterMode.RelativeMode -> memory[relativeBase + getMem(position + index).toInt()] = value
         }
     }
 
+    private fun getMem(position: Int): Long = memory.getOrDefault(position, 0L)
+
     private enum class ParameterMode {
         PositionMode,
-        ImmediateMode
+        ImmediateMode,
+        RelativeMode
     }
 }

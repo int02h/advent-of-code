@@ -46,7 +46,7 @@ object Day7 : AocDay {
         var index = 0
         while (true) {
             amps[index].runUntilOutput(input)
-            input = amps[index].output.last()
+            input = amps[index].output.last().toInt()
             index++
             if (index == amps.size) {
                 if (amps.last().isFinished) {
@@ -74,38 +74,38 @@ object Day7 : AocDay {
         } while (phases.toSet().size != phases.size)
     }
 
-    private class Amp(val program: IntArray) {
+    private class Amp(val program: LongArray) {
 
         private lateinit var computer: IntCodeComputer
-        val output = mutableListOf<Int>()
-        val input = mutableListOf<Int>()
+        val output = mutableListOf<Long>()
+        val input = mutableListOf<Long>()
 
         val isFinished: Boolean get() = computer.position == -1
 
         fun handle(input: Int, phase: Int): Int {
-            val output = mutableListOf<Int>()
+            val output = mutableListOf<Long>()
             IntCodeComputer(
                 program = program.copyOf(),
-                input = mutableListOf(phase, input),
+                input = mutableListOf(phase.toLong(), input.toLong()),
                 output = output
             ).runAll()
             assert(output.size == 1)
-            return output.first()
+            return output.first().toInt()
         }
 
         fun prepare(phase: Int) {
             output.clear()
             input.clear()
-            input += phase
+            input += phase.toLong()
             computer = IntCodeComputer(program = program.copyOf(), input = input, output = output)
         }
 
         fun runUntilOutput(input: Int) {
-            this.input += input
+            this.input += input.toLong()
             computer.runUntilOutput()
         }
     }
 
-    private fun readProgram(input: Input): IntArray =
-        input.asText().trim().split(",").map { it.trim().toInt() }.toIntArray()
+    private fun readProgram(input: Input): LongArray =
+        input.asText().trim().split(",").map { it.trim().toLong() }.toLongArray()
 }

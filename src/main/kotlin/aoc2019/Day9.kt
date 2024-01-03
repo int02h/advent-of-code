@@ -3,20 +3,17 @@ package aoc2019
 import AocDay
 import Input
 
-object Day5 : AocDay {
+object Day9 : AocDay {
+
     override fun part1(input: Input) {
-        val result = runWithId(input, id = 1)
-        assert(result == 9961446)
-        println(result)
+        runWithId(input, 1)
     }
 
     override fun part2(input: Input) {
-        val result = runWithId(input, id = 5)
-        assert(result == 742621)
-        println(result)
+        runWithId(input, 2)
     }
 
-    private fun runWithId(input: Input, id: Int): Int {
+    private fun runWithId(input: Input, id: Int) {
         val program = readProgram(input)
         val output = mutableListOf<Long>()
         IntCodeComputer(
@@ -24,9 +21,7 @@ object Day5 : AocDay {
             input = mutableListOf(id.toLong()),
             output = output
         ).runAll()
-        val nonZero = output.filter { it != 0L }
-        assert(nonZero.size == 1)
-        return nonZero.first().toInt()
+        println(output)
     }
 
     private fun readProgram(input: Input): LongArray =
