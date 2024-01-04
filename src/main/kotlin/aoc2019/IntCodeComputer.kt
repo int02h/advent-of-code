@@ -21,8 +21,8 @@ class IntCodeComputer(
         }
     }
 
-    fun runUntilOutput() {
-        val outputTargetSize = output.size + 1
+    fun runUntilOutput(outputCount: Int = 1) {
+        val outputTargetSize = output.size + outputCount
         while (position != -1 && output.size != outputTargetSize) {
             executeNext()
         }
