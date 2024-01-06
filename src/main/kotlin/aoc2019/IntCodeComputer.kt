@@ -10,6 +10,10 @@ class IntCodeComputer(
     private val parameterModes = Array(3) { ParameterMode.PositionMode }
 
     val memory = mutableMapOf<Int, Long>()
+    val overriddenWriteValues = mutableMapOf<Int, Long>()
+
+    val isHalted: Boolean
+        get() = position == -1
 
     init {
         program.forEachIndexed { index, value -> memory[index] = value }
@@ -28,7 +32,21 @@ class IntCodeComputer(
         }
     }
 
-    private fun executeNext() {
+    fun runUntilInput() {
+        if (position == -1) {
+            return
+        }
+        var opcode = getMem(position).toInt()
+        while (opcode != 3) {
+            executeNext()
+            if (position == -1) {
+                break
+            }
+            opcode = getMem(position).toInt()
+        }
+    }
+
+    fun executeNext() {
         val opcode = getMem(position).toInt()
         getParameterModes(opcode)
         when (opcode % 100) {
@@ -99,11 +117,12 @@ class IntCodeComputer(
         }
 
     private fun setValue(index: Int, value: Long) {
-        when (parameterModes[index - 1]) {
-            ParameterMode.PositionMode -> memory[getMem(position + index).toInt()] = value
+        val address = when (parameterModes[index - 1]) {
+            ParameterMode.PositionMode -> getMem(position + index).toInt()
             ParameterMode.ImmediateMode -> error("Invalid immediate write")
-            ParameterMode.RelativeMode -> memory[relativeBase + getMem(position + index).toInt()] = value
+            ParameterMode.RelativeMode -> relativeBase + getMem(position + index).toInt()
         }
+        memory[address] = overriddenWriteValues.getOrDefault(address, value)
     }
 
     private fun getMem(position: Int): Long = memory.getOrDefault(position, 0L)
