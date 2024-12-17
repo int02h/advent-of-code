@@ -2,9 +2,6 @@ package aoc2024
 
 import AocDay2
 import Input
-import java.lang.Math.pow
-import kotlin.math.pow
-import kotlin.system.exitProcess
 
 class Day17 : AocDay2 {
 
@@ -31,8 +28,6 @@ class Day17 : AocDay2 {
     }
 
     override fun part2() {
-        disasm()
-
         fun resetAndExec(a: Long) {
             regA = a
             regB = 0
@@ -111,42 +106,4 @@ class Day17 : AocDay2 {
         }
     }
 
-    private fun disasm() {
-        var ip = 0
-        val asm = buildString {
-            while (ip + 1 < program.size) {
-                append(ip.toString().padStart(2, '0')).append(": ")
-                val opcode = program[ip++]
-
-                fun getComboOperand(): String {
-                    val value = program[ip++]
-                    return when (value) {
-                        in 0..3 -> value.toString()
-                        4 -> "a"
-                        5 -> "b"
-                        6 -> "c"
-                        else -> error("Invalid value: $value")
-                    }
-                }
-
-                fun getLiteral(): Int = program[ip++]
-                when (opcode) {
-                    0 /* adv */ -> append("a = a/(2^${getComboOperand()})")
-                    1 /* bxl */ -> append("b = b xor ${getLiteral()}")
-                    2 /* bst */ -> append("b = ${getComboOperand()} % 8")
-                    3 /* jnz */ -> append("if (a != 0) ip = ${getLiteral()}")
-                    4 /* bxc */ -> {
-                        append("b = b xor c")
-                        // For legacy reasons, this instruction reads an operand but ignores it
-                        getLiteral()
-                    }
-                    5 /* out */ -> append("out ${getComboOperand()} % 8")
-                    6 /* bdv */ -> append("b = a/(2^${getComboOperand()})")
-                    7 /* cdv */ -> append("c = a/(2^${getComboOperand()})")
-                }
-                append("\n")
-            }
-        }
-        println(asm)
-    }
 }
