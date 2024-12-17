@@ -37,3 +37,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# It's not legal to keep input of puzzles in public
+# https://old.reddit.com/r/adventofcode/wiki/faqs/copyright/inputs
+/input
