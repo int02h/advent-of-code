@@ -29,6 +29,29 @@ class Maze(
         return emptyList()
     }
 
+    fun findShortestRouteLength(from: Point, to: Point): Int {
+        val visited = mutableMapOf<Point, Int>()
+        val queue = PriorityQueue<RoutePoint> { p1, p2 -> p1.routeLength - p2.routeLength }
+        queue.add(RoutePoint(from, 0))
+
+        while (queue.isNotEmpty()) {
+            val routePoint = queue.remove()
+            val v = visited[routePoint.point]
+            if (v != null && v <= routePoint.routeLength) {
+                continue
+            }
+            visited[routePoint.point] = routePoint.routeLength
+            if (routePoint.point == to) {
+                return routePoint.routeLength
+            }
+            if (dataProvider.isEmptyCell(routePoint.point.up)) queue.add(routePoint.up())
+            if (dataProvider.isEmptyCell(routePoint.point.down)) queue.add(routePoint.down())
+            if (dataProvider.isEmptyCell(routePoint.point.left)) queue.add(routePoint.left())
+            if (dataProvider.isEmptyCell(routePoint.point.right)) queue.add(routePoint.right())
+        }
+        return Int.MAX_VALUE
+    }
+
     fun findLongestRoute(from: Point): List<Point> {
         val visited = mutableMapOf<Point, Int>()
         val queue = PriorityQueue<RoutePoint> { p1, p2 -> p2.routeLength - p1.routeLength }
