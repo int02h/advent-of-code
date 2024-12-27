@@ -1,7 +1,7 @@
 import org.reflections.Reflections
 
 fun main() {
-    val year = 2024
+    val year = 2015
     val reflections = Reflections("aoc${year}")
     val cls = reflections.getSubTypesOf(AocDay2::class.java)
         .maxBy { it.simpleName!!.dropWhile { ch -> !ch.isDigit() }.toInt() }
