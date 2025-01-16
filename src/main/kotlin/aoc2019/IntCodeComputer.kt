@@ -37,7 +37,7 @@ class IntCodeComputer(
             return
         }
         var opcode = getMem(position).toInt()
-        while (opcode != 3) {
+        while (opcode % 100 != 3) {
             executeNext()
             if (position == -1) {
                 break
