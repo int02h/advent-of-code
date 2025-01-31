@@ -74,6 +74,53 @@ class Maze(
         return buildRoute(from, mostDistantPoint, visited)
     }
 
+    fun findAllRoutesOfLength(from: Point, length: Int): List<List<Point>> {
+        val visited = mutableSetOf<Point>()
+        val result = mutableListOf<List<Point>>()
+        val routeList = mutableListOf(from)
+
+        fun getAllRoutes(p: Point) {
+            if (routeList.size == length + 1) {
+                result += routeList.toMutableList()
+                return
+            }
+
+            visited += p
+            if (dataProvider.isEmptyCell(p.up)) {
+                if (!visited.contains(p.up)) {
+                    routeList += p.up
+                    getAllRoutes(p.up)
+                    routeList -= p.up
+                }
+            }
+            if (dataProvider.isEmptyCell(p.down)) {
+                if (!visited.contains(p.down)) {
+                    routeList += p.down
+                    getAllRoutes(p.down)
+                    routeList -= p.down
+                }
+            }
+            if (dataProvider.isEmptyCell(p.left)) {
+                if (!visited.contains(p.left)) {
+                    routeList += p.left
+                    getAllRoutes(p.left)
+                    routeList -= p.left
+                }
+            }
+            if (dataProvider.isEmptyCell(p.right)) {
+                if (!visited.contains(p.right)) {
+                    routeList += p.right
+                    getAllRoutes(p.right)
+                    routeList -= p.right
+                }
+            }
+            visited -= p
+        }
+
+        getAllRoutes(from)
+        return result
+    }
+
     private fun buildRoute(from: Point, to: Point, visited: Map<Point, Int>): List<Point> {
         val route = mutableListOf<Point>()
         var length = visited.getValue(to)
