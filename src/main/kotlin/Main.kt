@@ -1,10 +1,10 @@
 import org.reflections.Reflections
 
 fun main() {
-    val year = 2016
+    val year = 2025
     val reflections = Reflections("aoc${year}")
     val cls = reflections.getSubTypesOf(AocDay2::class.java)
-        .maxBy { it.simpleName!!.dropWhile { ch -> !ch.isDigit() }.toInt() }
+        .maxBy { it.simpleName.dropWhile { ch -> !ch.isDigit() }.toInt() }
 
     var instance = cls.getDeclaredConstructor().newInstance()
     instance.readInput(Input(year, getDayIndex(instance)))
