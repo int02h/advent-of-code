@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.7.21'
+    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
 }
 
 group = 'org.example'
@@ -21,9 +21,9 @@ test {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = '17'
+    kotlinOptions.jvmTarget = '21'
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = '17'
+    kotlinOptions.jvmTarget = '21'
 }
