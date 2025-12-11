@@ -9,7 +9,7 @@ fun main() {
     var instance = cls.getDeclaredConstructor().newInstance()
     var start = System.currentTimeMillis()
     instance.readInput(Input(year, getDayIndex(instance)))
-    instance.part1()
+    //instance.part1()
     println("Part 1 took ${System.currentTimeMillis() - start} ms")
 
     instance = cls.getDeclaredConstructor().newInstance()
